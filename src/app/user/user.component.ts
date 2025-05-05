@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 
 @Component({
     selector: "app-user",
@@ -7,14 +7,30 @@ import { Component, Input } from "@angular/core";
     styleUrl: "./user.component.css",
 }) 
 export class UserComponent {
-    @Input() avatar!: string;
-    @Input() name!: string;
+    @Input({required: true}) id!: string;
+    @Input({required: true}) avatar!: string;
+    @Input({required: true}) name!: string;
+    @Output() select = new EventEmitter();
 
     get imagePath() {
         return "assets/users/" + this.avatar;
     }
 
     onSelectUser() {
-        
+        this.select.emit(this.id);
     }
+
+    // avatar e name grazie al decorator "input" sono ora dei segnali.
+    // required è utilizzato perchè è obbligatorio che venga colmata questa variabile
+    
+    //avatar = input.required<string>();
+    //name = input.required<string>();
+
+    // angular ricalcolerà il valore di imagePath solo ogni volta
+    // che il valore dell'avatar verrà modificato, ovviamente 
+    // procedimento piu efficiente di quello di usare un semplice metodo get
+    
+    //imagePath = computed(() => {
+    //    return "assets/users/" + this.avatar();
+    //});
 }
